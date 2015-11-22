@@ -8,6 +8,7 @@
 
 import Foundation
 
+
 class Client {
     
     internal var useMock: Bool = false
@@ -77,13 +78,16 @@ class Client {
         println("inside sendReal :")
         var task: NSURLSessionDataTask = NSURLSession.sharedSession().dataTaskWithRequest(request) {
             (data, response, error) in
-            trans.setData(data)
+
             //            println("The data is: ",trans.getData())
-            trans.setResponse(response)
+
             //            println("The response is :",trans.getResponse())
-            trans.setError(error)
+            
             var errors: NSError?
             let readdata = NSJSONSerialization.JSONObjectWithData(data!, options: nil, error: &errors) as! NSDictionary
+            trans.setData(data)
+            trans.setResponse(response)
+            trans.setError(error)
             trans.setDict(readdata)
             completion(transaction:trans)
         }
@@ -135,6 +139,7 @@ class Client {
         return trans
     }
     
+    
     private func jsonToString(json: [String: AnyObject]) -> String {
         var result = "{"
         var delimiter = ""
@@ -164,6 +169,7 @@ class Client {
         }
         result = result + "}"
         
+        println("Body String is :"+result)
         return result
     }
     
@@ -281,6 +287,7 @@ class Client {
                     println("Non-Empty Body")
                     bodyFinal = jsonToString(json as! [String : AnyObject])
                     truncatedBodyFinal = bodyFinal
+                    println(truncatedBodyFinal)
                 }
             }
         }

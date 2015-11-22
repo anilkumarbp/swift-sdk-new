@@ -27,17 +27,8 @@ class Platform {
     let appKey: String
     let appSecret: String
     //    var subscription: Subscription?
-    
-    //default contructor
-    //    init(){
-    //        self.appKey = appKey
-    //        self.appSecret = appSecret
-    //        self.server = server
-    //    }
-    //
-    
-    
-    
+
+
     /// Constructor for the platform of the SDK
     ///
     /// :param: appKey      The appKey of your app
@@ -77,18 +68,6 @@ class Platform {
         return builtUrl
     }
     
-    //    func loggedIn() -> Bool {
-    //
-    ////        do {
-    ////            try {
-    ////                if (self.auth.accessTokenValid() || self.refresh()) {
-    ////                    return true
-    ////                }
-    ////            }; catch() {
-    ////                    return false
-    ////            }
-    ////        }
-    //    }
     /// Authorizes the user with the correct credentials
     ///
     /// :param: username    The username of the RingCentral account
@@ -103,8 +82,6 @@ class Platform {
             "refresh_token_ttl": self.REFRESH_TOKEN_TTL
             ])
         println("Successfull return from requestToken")
-        //        let readdata = NSJSONSerialization.JSONObjectWithData(response.getData()!, options: nil, response.getError()) as! NSDictionary
-        //        println(response.getDict())
         self.auth.setData(response.getDict())
         println("Is access token valid : ",self.auth.accessTokenValid())
         println("The auth data is : ")
@@ -129,7 +106,6 @@ class Platform {
             "refresh_token_ttl": self.REFRESH_TOKEN_TTL
             ])
         println("Successfull return from requestToken")
-        //        let readdata = NSJSONSerialization.JSONObjectWithData(response.getData()!, options: nil, response.getError()) as! NSDictionary
         println(response.getDict())
         self.auth.setData(response.getDict())
         println("Is access token valid",self.auth.accessTokenValid())
@@ -204,71 +180,7 @@ class Platform {
     
     
     
-    
-    /// Authorizes the user with the correct credentials
-    ///
-    /// :param: username    The username of the RingCentral account
-    /// :param: password    The password of the RingCentral account
-    //    func authorize(username: String, password: String, remember: Bool = true) {
-    //        let authHolder = Auth(username: username, password: password, server: server)
-    //        let feedback = authHolder.login(appKey, secret: appSecret)
-    //        if (feedback.1 as! NSHTTPURLResponse).statusCode / 100 == 2 {
-    //            self.auth = authHolder
-    //        }
-    //    }
-    //
-    
-    
-    /// Authorizes the user with the correct credentials (with extra ext)
-    ///
-    /// :param: username    The username of the RingCentral account
-    /// :param: password    The password of the RingCentral account
-    //    /// :param: ext         The extension of the RingCentral account
-    //    func authorize(username: String, ext: String, password: String) {
-    //        let authHolder = Auth(username: username, ext: ext, password: password, server: self.server)
-    //        let feedback = authHolder.login(appKey, secret: appSecret)
-    //        if (feedback.1 as! NSHTTPURLResponse).statusCode / 100 == 2 {
-    //            self.auth = authHolder
-    //        }
-    //    }
-    
-    
-    /// Refreshes the Auth object so that the accessToken and refreshToken are updated.
-    ///
-    /// **Caution**: Refreshing an accessToken will deplete it's current time, and will
-    /// not be appended to following accessToken.
-    //    func refresh() {
-    //        if let holder: Auth = self.auth {
-    //            self.auth!.refresh()
-    //        } else {
-    //            notAuthorized()
-    //        }
-    //    }
-    
-    /// Refreshes the Auth object so that the accessToken and refreshToken are updated.
-    ///
-    /// **Caution**: Refreshing an accessToken will deplete it's current time, and will
-    //    /// not be appended to following accessToken.
-    //    func refresh () -> Transaction {
-    //        var error: NSError?
-    //        if (auth.refreshTokenValid() == false) {
-    //            NSException.raise("Exception", format:"Refresh token has expired", arguments:getVaList([(error!)]))
-    //        }
-    //        let response = requestToken(self.TOKEN_ENDPOINT,body: [
-    //            "grant_type": "refresh_token",
-    //            "refresh_token": self.auth.refreshToken(),
-    //            "access_token_ttl": self.ACCESS_TOKEN_TTL,
-    //            "refresh_token_ttl": self.REFRESH_TOKEN_TTL
-    //            ])
-    //        self.auth.setData(response.jsonAsArray)
-    //        return response
-    //
-    //
-    //    }
-    
-    
-    
-    /// Logs the user out of the current account.
+       /// Logs the user out of the current account.
     ///
     /// Kills the current accessToken and refreshToken.
     func logout() -> Transaction {
@@ -295,13 +207,6 @@ class Platform {
         return auth.isAccessTokenValid()
     }
     
-    /// Tells the user that the platform is not yet authorized.
-    ///
-    ///
-    func notAuthorized() {
-        
-    }
-    
     /// Tells the user if the accessToken is valed
     ///
     ///
@@ -312,20 +217,8 @@ class Platform {
         }
     }
     
+
     
-    //    // My methods ( Generic HTTP methods )
-    //    func get(url: String, query: [String: String]? = nil, headers: [String: String]? = nil, body: [String: String]? = nil, options: [String: String]? = nil, completion: (transaction: Transaction) -> Void) {
-    //
-    //        let urlCreated = createUrl(url,options: options!)
-    //
-    //        sendRequest(self.client.createRequest("GET", url: url, query: query, body: body!, headers: headers!), path: url, options: options!) {
-    //            (t) in
-    //            completion(transaction: t)
-    //
-    //        }
-    //
-    //    }
-    //
     // Generic Method calls  ( HTTP ) GET
     func get(url: String, query: [String: String] = ["":""], completion: (transaction: Transaction) -> Void) {
         apiCall([
@@ -337,8 +230,9 @@ class Platform {
                 (t) in
                 completion(transaction: t)
                 
-        }
+            }
     }
+    
     // Generic Method calls  ( HTTP ) without completion handler
     func get(url: String, query: [String: String] = ["":""]) -> Transaction {
         // Check if query is empty
@@ -352,9 +246,9 @@ class Platform {
     
     
     // Generic Method calls  ( HTTP ) POST
-    func post(url: String, body: String = "", completion: (transaction: Transaction) -> Void) {
+    func post(url: String, body: [String: AnyObject] = ["":""], completion: (transaction: Transaction) -> Void) {
         apiCall([
-            "method": "GET",
+            "method": "POST",
             "url": url,
             "body": body
             ])
@@ -362,12 +256,40 @@ class Platform {
                 (t) in
                 completion(transaction: t)
                 
+            }
+    }
+    
+    // Generic Method calls  ( HTTP ) PUT
+    func put(url: String, body: [String: AnyObject] = ["":""], completion: (transaction: Transaction) -> Void) {
+        apiCall([
+            "method": "PUT",
+            "url": url,
+            "body": body
+            ])
+            {
+                (t) in
+                completion(transaction: t)
+                
+            }
+    }
+    
+    // Generic Method calls ( HTTP ) DELETE
+    func delete(url: String, query: [String: String] = ["":""], completion: (transaction: Transaction) -> Void) {
+        apiCall([
+            "method": "DELETE",
+            "url": url,
+            "query": query
+            ])
+            {
+                (t) in
+                completion(transaction: t)
+                
         }
     }
+
     // Generic Method calls ( HTTP ) without the completion handler
     
-    
-    
+
     // Generic Method Calls
     
     /// HTTP request method for GET
@@ -450,7 +372,7 @@ class Platform {
             //                body = options["body"] as! [String: AnyObject]
         }
         
-        return sendRequest(self.client.createRequest("GET", url: url, query: query, body: body, headers: headers), path: url, options: options)
+        return sendRequest(self.client.createRequest(method, url: url, query: query, body: body, headers: headers), path: url, options: options)
     }
     
     
@@ -489,104 +411,11 @@ class Platform {
         
         let urlCreated = createUrl(url,options: options)
         
-        sendRequest(self.client.createRequest("GET", url: urlCreated, query: query, body: body, headers: headers), path: url, options: options) {
+        sendRequest(self.client.createRequest(method, url: urlCreated, query: query, body: body, headers: headers), path: url, options: options) {
             (t) in
             completion(transaction: t)
             
         }
         
-    }
-    //
-    //    // ringout
-    //    func testApiCall() {
-    //        apiCall([
-    //            "method": "POST",
-    //            "url": "/restapi/v1.0/account/~/extension/~/ringout",
-    //            "body": ["to": ["phoneNumber": "14088861168"],
-    //                "from": ["phoneNumber": "14088861168"],
-    //                "callerId": ["phoneNumber": "13464448343"],
-    //                "playPrompt": "true"]
-    //            ])
-    //        sleep(5)
-    //
-    //    }
-    //
-    //    // fax
-    //    func testApiCall2() {
-    //        apiCall([
-    //            "method": "POST",
-    //            "url": "/restapi/v1.0/account/~/extension/~/fax",
-    //            "body": "--Boundary_1_14413901_1361871080888\n" +
-    //                "Content-Type: application/json\n" +
-    //                "\n" +
-    //                "{\n" +
-    //                "  \"to\":[{\"phoneNumber\":\"13464448343\"}],\n" +
-    //                "  \"faxResolution\":\"High\",\n" +
-    //                "  \"sendTime\":\"2013-02-26T09:31:20.882Z\"\n" +
-    //                "}\n" +
-    //                "\n" +
-    //                "--Boundary_1_14413901_1361871080888\n" +
-    //                "Content-Type: text/plain\n" +
-    //                "\n" +
-    //                "Hello, World!\n" +
-    //                "\n" +
-    //            "--Boundary_1_14413901_1361871080888--",
-    //            "headers": ["Content-Type": "multipart/mixed;boundary=Boundary_1_14413901_1361871080888"]
-    //            ]) {
-    //                (data, response, error) in
-    //                println(response)
-    //                println(error)
-    //                println(NSJSONSerialization.JSONObjectWithData(data!, options: nil, error: nil) as! NSDictionary)
-    //        }
-    //        sleep(5)
-    //    }
-    //
-    //    // subscription
-    //    func testApiCall3() {
-    //        apiCall([
-    //            "method": "POST",
-    //            "url": "/restapi/v1.0/subscription",
-    //            "body": [
-    //                "eventFilters": [
-    //                    "/restapi/v1.0/account/~/extension/~/presence",
-    //                    "/restapi/v1.0/account/~/extension/~/message-store"
-    //                ],
-    //                "deliveryMode": [
-    //                    "transportType": "PubNub",
-    //                    "encryption": "false"
-    //                ]
-    //            ]
-    //            ]) {
-    //                (data, response, error) in
-    //                println(response)
-    //                println(error)
-    //                println(NSJSONSerialization.JSONObjectWithData(data!, options: nil, error: nil) as! NSDictionary)
-    //        }
-    //        sleep(5)
-    //    }
-    //
-    //    func testSubCall() {
-    //        self.subscription = Subscription(platform: self)
-    //        subscription!.register()
-    //
-    //    }
-    //
-    //    func testSMS() {
-    //        apiCall([
-    //            "method": "POST",
-    //            "url": "/restapi/v1.0/account/~/extension/~/sms",
-    //            "body": "{" +
-    //                "\"to\": [{\"phoneNumber\": " +
-    //                "\"" + "18315941779" + "\"}]," +
-    //                "\"from\": {\"phoneNumber\": \"" + "15856234190" +
-    //                "\"}," + "\"text\": \"" + "tetestingxt" + "\"" + "}"
-    //            ]) {
-    //                (data, response, error) in
-    //                println(response)
-    //                println(error)
-    //                println(NSJSONSerialization.JSONObjectWithData(data!, options: nil, error: nil) as! NSDictionary)
-    //        }
-    //        sleep(5)
-    //    }
-    
+    }    
 }

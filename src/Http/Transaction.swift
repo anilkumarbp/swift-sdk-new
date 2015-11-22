@@ -22,7 +22,7 @@ class Transaction {
     private var error: NSError?
     private var dict: NSDictionary?
     
-    init(request: NSMutableURLRequest, status: Int = 200) {
+    init(request: NSMutableURLRequest, status: Int = 200) { // data via constructor
         self.request = request
     }
     
@@ -46,12 +46,12 @@ class Transaction {
         return jsonAsString
     }
     
-    func setData(data: NSData?) {
+    func setData(data: NSData?) { // remove
         self.data = data
         self.jsonAsString = JSONStringify(data!)
     }
     
-    func setDict(dict: NSDictionary?) {
+    func setDict(dict: NSDictionary?) { // remove
         self.dict = dict
     }
     
