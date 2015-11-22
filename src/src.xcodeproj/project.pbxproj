@@ -8,10 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		4488991CFA43606085CEB2EF /* Pods_src.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 668B7EB7D8D2DAD760773A29 /* Pods_src.framework */; };
+		A62C77091C0146B20060C62C /* ApiResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A62C77081C0146B20060C62C /* ApiResponse.swift */; };
 		A68135BC1BFC1EF700EA7DD3 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = A68135BB1BFC1EF700EA7DD3 /* main.swift */; };
 		A681360A1C006B3A00EA7DD3 /* SDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = A68136031C006B3A00EA7DD3 /* SDK.swift */; };
 		A681360B1C006B3A00EA7DD3 /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = A68136051C006B3A00EA7DD3 /* Client.swift */; };
-		A681360C1C006B3A00EA7DD3 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = A68136061C006B3A00EA7DD3 /* Transaction.swift */; };
 		A681360D1C006B3A00EA7DD3 /* Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = A68136081C006B3A00EA7DD3 /* Auth.swift */; };
 		A681360E1C006B3A00EA7DD3 /* Platform.swift in Sources */ = {isa = PBXBuildFile; fileRef = A68136091C006B3A00EA7DD3 /* Platform.swift */; };
 		A681362F1C006B8500EA7DD3 /* AES.swift in Sources */ = {isa = PBXBuildFile; fileRef = A68136111C006B8500EA7DD3 /* AES.swift */; };
@@ -62,11 +62,11 @@
 		03D0D1D30620565AE7281CCA /* Pods-src.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-src.release.xcconfig"; path = "Pods/Target Support Files/Pods-src/Pods-src.release.xcconfig"; sourceTree = "<group>"; };
 		54D737F40AA3A44D5339C015 /* Pods-src.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-src.debug.xcconfig"; path = "Pods/Target Support Files/Pods-src/Pods-src.debug.xcconfig"; sourceTree = "<group>"; };
 		668B7EB7D8D2DAD760773A29 /* Pods_src.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_src.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A62C77081C0146B20060C62C /* ApiResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiResponse.swift; sourceTree = "<group>"; };
 		A68135B81BFC1EF700EA7DD3 /* src */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = src; sourceTree = BUILT_PRODUCTS_DIR; };
 		A68135BB1BFC1EF700EA7DD3 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		A68136031C006B3A00EA7DD3 /* SDK.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SDK.swift; sourceTree = "<group>"; };
 		A68136051C006B3A00EA7DD3 /* Client.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
-		A68136061C006B3A00EA7DD3 /* Transaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
 		A68136081C006B3A00EA7DD3 /* Auth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Auth.swift; sourceTree = "<group>"; };
 		A68136091C006B3A00EA7DD3 /* Platform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Platform.swift; sourceTree = "<group>"; };
 		A68136111C006B8500EA7DD3 /* AES.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AES.swift; sourceTree = "<group>"; };
@@ -162,8 +162,8 @@
 		A68136041C006B3A00EA7DD3 /* Http */ = {
 			isa = PBXGroup;
 			children = (
+				A62C77081C0146B20060C62C /* ApiResponse.swift */,
 				A68136051C006B3A00EA7DD3 /* Client.swift */,
-				A68136061C006B3A00EA7DD3 /* Transaction.swift */,
 			);
 			path = Http;
 			sourceTree = "<group>";
@@ -341,7 +341,6 @@
 				A68136341C006B8500EA7DD3 /* Cipher.swift in Sources */,
 				A68136331C006B8500EA7DD3 /* ChaCha20.swift in Sources */,
 				A68136381C006B8500EA7DD3 /* Hash.swift in Sources */,
-				A681360C1C006B3A00EA7DD3 /* Transaction.swift in Sources */,
 				A681363B1C006B8500EA7DD3 /* IntegerConvertible.swift in Sources */,
 				A68136481C006B8500EA7DD3 /* UInt32Extension.swift in Sources */,
 				A681363C1C006B8500EA7DD3 /* IntExtension.swift in Sources */,
@@ -356,6 +355,7 @@
 				A68136371C006B8500EA7DD3 /* Generics.swift in Sources */,
 				A681360B1C006B3A00EA7DD3 /* Client.swift in Sources */,
 				A68136311C006B8500EA7DD3 /* Authenticator.swift in Sources */,
+				A62C77091C0146B20060C62C /* ApiResponse.swift in Sources */,
 				A68136421C006B8500EA7DD3 /* PKCS7.swift in Sources */,
 				A68136401C006B8500EA7DD3 /* Padding.swift in Sources */,
 			);

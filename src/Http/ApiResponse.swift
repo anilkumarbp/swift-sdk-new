@@ -8,15 +8,17 @@
 
 import Foundation
 
-class Transaction {
+class ApiResponse {
     
+    // Constants
     internal var jsonAsArray = [String: AnyObject]()
-    internal var jsonAsObject = AnyObject?()
-    internal var multipartTransactions = AnyObject?()
+    internal var jsonAsObject: AnyObject? = AnyObject?()
+    internal var multipartTransactions: AnyObject? = AnyObject?()
     internal var request: NSMutableURLRequest?
-    internal var raw = AnyObject?()
+    internal var raw: AnyObject? = AnyObject?()
     internal var jsonAsString: String = ""
     
+    // Data Response Error Initialization
     private var data: NSData?
     private var response: NSURLResponse?
     private var error: NSError?

@@ -12,11 +12,11 @@ import Foundation
 println("Hello, World!")
 
 
-var app_key: String = "K_S9NrKnRJeS46oik6kmMg"
-var app_secret = "L0zJuMGMQFWMxpMMW7yuIwRv7mmzY4RpynuDUULC_vpg"
-var username = "15854124927"
-var password = "Chrisadler1!"
-var response: Transaction
+var app_key: String = ""
+var app_secret = ""
+var username = ""
+var password = ""
+var response: ApiResponse
 
 
 var rcsdk = SDK(appKey: app_key, appSecret: app_secret, server: SDK.RC_SERVER_PRODUCTION)
@@ -24,7 +24,7 @@ println("SDK initialized")
 var platform = rcsdk.platform()
 var subscription = rcsdk.createSubscription()
 println("Platform singleton")
-response = platform.login(username, ext:"", password: password)
+response = platform.login(username, ext:"101", password: password)
 println(response.getDict())
 
 // Test a GET request
@@ -58,41 +58,41 @@ subscription.register()
         println(transaction.getDict())
     }
 sleep(2)
-//
-//platform.post("/account/~/extension/~/ringout", body :
-//                [ "to": ["phoneNumber": "18315941779"],
-//                  "from": ["phoneNumber": "15856234190"],
-//                  "callerId": ["phoneNumber": ""],
-//                  "playPrompt": "true"
-//                ])
-//    {
-//        (transaction) in
-//        println("Response is :")
-//        println(transaction.getResponse())
-//        println("API response is :")
-//        println(transaction.getDict())
-//        
-//    }
-//
-//sleep(5)
-//
-//print("completed ring-out")
-//
-//platform.delete("/account/~/extension/~/ringout", query :
-//    [
-//        "ringoutId": "264"
-//    ])
-//    {
-//        (transaction) in
-//        println("Response is :")
-//        println(transaction.getResponse())
-//        println("API response is :")
-//        println(transaction.getDict())
-//        
-//    }
-//sleep(5)
-//
-//print("ring-out cancelled")
+
+platform.post("/account/~/extension/~/ringout", body :
+                [ "to": ["phoneNumber": "18315941779"],
+                  "from": ["phoneNumber": "15856234190"],
+                  "callerId": ["phoneNumber": ""],
+                  "playPrompt": "true"
+                ])
+    {
+        (transaction) in
+        println("Response is :")
+        println(transaction.getResponse())
+        println("API response is :")
+        println(transaction.getDict())
+        
+    }
+
+sleep(5)
+
+print("completed ring-out")
+
+platform.delete("/account/~/extension/~/ringout", query :
+    [
+        "ringoutId": "264"
+    ])
+    {
+        (transaction) in
+        println("Response is :")
+        println(transaction.getResponse())
+        println("API response is :")
+        println(transaction.getDict())
+        
+    }
+sleep(5)
+
+print("ring-out cancelled")
 
 
 

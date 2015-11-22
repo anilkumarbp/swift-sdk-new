@@ -46,7 +46,7 @@ class Client {
     ///
     /// :param: options         List of options for HTTP request
     /// :param: completion      Completion handler for HTTP request
-    func send(request: NSMutableURLRequest) -> Transaction {
+    func send(request: NSMutableURLRequest) -> ApiResponse {
         if self.useMock {
             return sendMock(request)
         } else {
@@ -58,7 +58,7 @@ class Client {
     ///
     /// :param: options         List of options for HTTP request
     /// :param: completion      Completion handler for HTTP request
-    func send(request: NSMutableURLRequest, completion: (transaction: Transaction) -> Void) {
+    func send(request: NSMutableURLRequest, completion: (transaction: ApiResponse) -> Void) {
         if self.useMock {
             sendMock(request) {
                 (t) in
@@ -73,8 +73,8 @@ class Client {
     }
     
     
-    func sendReal(request: NSMutableURLRequest, completion: (transaction: Transaction) -> Void) {
-        var trans = Transaction(request: request)
+    func sendReal(request: NSMutableURLRequest, completion: (transaction: ApiResponse) -> Void) {
+        var trans = ApiResponse(request: request)
         println("inside sendReal :")
         var task: NSURLSessionDataTask = NSURLSession.sharedSession().dataTaskWithRequest(request) {
             (data, response, error) in
@@ -95,13 +95,13 @@ class Client {
     }
     
     
-    func sendMock(request: NSMutableURLRequest, completion: (transaction: Transaction) -> Void) {
+    func sendMock(request: NSMutableURLRequest, completion: (transaction: ApiResponse) -> Void) {
         
     }
     
-    func sendReal(request: NSMutableURLRequest) -> Transaction {
+    func sendReal(request: NSMutableURLRequest) -> ApiResponse {
         
-        var trans = Transaction(request: request)
+        var trans = ApiResponse(request: request)
         var response: NSURLResponse?
         var error: NSError?
         let data = NSURLConnection.sendSynchronousRequest(request, returningResponse: &response, error: &error)
@@ -134,8 +134,8 @@ class Client {
         return trans
     }
     
-    func sendMock(request: NSMutableURLRequest) -> Transaction {
-        var trans = Transaction(request: request)
+    func sendMock(request: NSMutableURLRequest) -> ApiResponse {
+        var trans = ApiResponse(request: request)
         return trans
     }
     

@@ -103,7 +103,7 @@ class Subscription: NSObject, PNObjectEventListener {
     /// Registers for a new subscription or renews an old one
     ///
     /// :param: options         List of options for PubNub
-    func register(options: [String: AnyObject] = [String: AnyObject](), completion: (transaction: Transaction) -> Void) {
+    func register(options: [String: AnyObject] = [String: AnyObject](), completion: (transaction: ApiResponse) -> Void) {
         if (isSubscribed()) {
             return renew(options) {
                 (t) in
@@ -132,7 +132,7 @@ class Subscription: NSObject, PNObjectEventListener {
     /// Renews the subscription
     ///
     /// :param: options         List of options for PubNub
-    func renew(options: [String: AnyObject], completion: (transaction: Transaction) -> Void) {
+    func renew(options: [String: AnyObject], completion: (transaction: ApiResponse) -> Void) {
 //        if let events = options["eventFilters"] {
 //            self.eventFilters = events as! [String]
 //        } else if let events = options["events"] {
@@ -169,7 +169,7 @@ class Subscription: NSObject, PNObjectEventListener {
     /// Subscribes to a channel with given events
     ///
     /// :param: options         Options for PubNub
-    func subscribe(options: [String: AnyObject], completion: (transaction: Transaction) -> Void) {
+    func subscribe(options: [String: AnyObject], completion: (transaction: ApiResponse) -> Void) {
      
         // Create Subscription
         platform.post("/subscription",

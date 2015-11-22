@@ -72,7 +72,7 @@ class Platform {
     ///
     /// :param: username    The username of the RingCentral account
     /// :param: password    The password of the RingCentral account
-    func login(username: String, ext: String, password: String) -> Transaction {
+    func login(username: String, ext: String, password: String) -> ApiResponse {
         let response = requestToken(self.TOKEN_ENDPOINT,body: [
             "grant_type": "password",
             "username": username,
@@ -94,7 +94,7 @@ class Platform {
     ///
     /// **Caution**: Refreshing an accessToken will deplete it's current time, and will
     /// not be appended to following accessToken.
-    func refresh() -> Transaction {
+    func refresh() -> ApiResponse {
         //        let transaction:
         if(!self.auth.refreshTokenValid()){
             NSException(name: "Refresh token has expired", reason: "reason", userInfo: nil).raise()
@@ -139,7 +139,7 @@ class Platform {
     /// @param: request     NSMutableURLRequest
     /// @param: options     list of options
     /// @response: ApiResponse
-    func sendRequest(request: NSMutableURLRequest, path: String, options: [String: AnyObject]!, completion: (transaction: Transaction) -> Void) {
+    func sendRequest(request: NSMutableURLRequest, path: String, options: [String: AnyObject]!, completion: (transaction: ApiResponse) -> Void) {
         client.send(inflateRequest(path, request: request, options: options)) {
             (t) in
             completion(transaction: t)
@@ -147,7 +147,7 @@ class Platform {
         }
     }
     
-    func sendRequest(request: NSMutableURLRequest, path: String, options: [String: AnyObject]!) -> Transaction {
+    func sendRequest(request: NSMutableURLRequest, path: String, options: [String: AnyObject]!) -> ApiResponse {
         return client.send(inflateRequest(path, request: request, options: options))
     }
     
@@ -156,7 +156,7 @@ class Platform {
     /// @param: path    The token endpoint
     /// @param: array   The body
     /// @return ApiResponse
-    func requestToken(path: String, body: [String:AnyObject]) -> Transaction {
+    func requestToken(path: String, body: [String:AnyObject]) -> ApiResponse {
         let authHeader = "Basic" + " " + self.apiKey()
         var headers: [String: String] = [:]
         headers["Authorization"] = authHeader
@@ -183,7 +183,7 @@ class Platform {
        /// Logs the user out of the current account.
     ///
     /// Kills the current accessToken and refreshToken.
-    func logout() -> Transaction {
+    func logout() -> ApiResponse {
         let response = requestToken(self.TOKEN_ENDPOINT,body: [
             "token": self.auth.accessToken()
             ])
@@ -220,8 +220,8 @@ class Platform {
 
     
     // Generic Method calls  ( HTTP ) GET
-    func get(url: String, query: [String: String] = ["":""], completion: (transaction: Transaction) -> Void) {
-        apiCall([
+    func get(url: String, query: [String: String] = ["":""], completion: (transaction: ApiResponse) -> Void) {
+        request([
             "method": "GET",
             "url": url,
             "query": query
@@ -234,10 +234,10 @@ class Platform {
     }
     
     // Generic Method calls  ( HTTP ) without completion handler
-    func get(url: String, query: [String: String] = ["":""]) -> Transaction {
+    func get(url: String, query: [String: String] = ["":""]) -> ApiResponse {
         // Check if query is empty
         
-        return apiCall([
+        return request([
             "method": "GET",
             "url": url,
             "query": query
@@ -246,8 +246,8 @@ class Platform {
     
     
     // Generic Method calls  ( HTTP ) POST
-    func post(url: String, body: [String: AnyObject] = ["":""], completion: (transaction: Transaction) -> Void) {
-        apiCall([
+    func post(url: String, body: [String: AnyObject] = ["":""], completion: (transaction: ApiResponse) -> Void) {
+        request([
             "method": "POST",
             "url": url,
             "body": body
@@ -260,8 +260,8 @@ class Platform {
     }
     
     // Generic Method calls  ( HTTP ) PUT
-    func put(url: String, body: [String: AnyObject] = ["":""], completion: (transaction: Transaction) -> Void) {
-        apiCall([
+    func put(url: String, body: [String: AnyObject] = ["":""], completion: (transaction: ApiResponse) -> Void) {
+        request([
             "method": "PUT",
             "url": url,
             "body": body
@@ -274,8 +274,8 @@ class Platform {
     }
     
     // Generic Method calls ( HTTP ) DELETE
-    func delete(url: String, query: [String: String] = ["":""], completion: (transaction: Transaction) -> Void) {
-        apiCall([
+    func delete(url: String, query: [String: String] = ["":""], completion: (transaction: ApiResponse) -> Void) {
+        request([
             "method": "DELETE",
             "url": url,
             "query": query
@@ -286,69 +286,17 @@ class Platform {
                 
         }
     }
-
-    // Generic Method calls ( HTTP ) without the completion handler
     
-
-    // Generic Method Calls
-    
-    /// HTTP request method for GET
-    ///
-    /// :param: url         URL for GET request
-    /// :param: query       List of queries for GET request
-    //    func get(url: String, query: [String: String] = ["": ""]) {
-    //        apiCall([
-    //            "method": "GET",
-    //            "url": url,
-    //            "query": query
-    //            ])
-    //    }
-    //
-    //    /// HTTP request method for PUT
-    //    ///
-    //    /// :param: url         URL for PUT request
-    //    /// :param: body        Body for PUT request
-    //    func put(url: String, body: String = "") {
-    //        apiCall([
-    //            "method": "PUT",
-    //            "url": url,
-    //            "body": body
-    //            ])
-    //    }
-    //
-    //    /// HTTP request method for POST
-    //    ///
-    //    /// :param: url         URL for POST request
-    //    /// :param: body        Body for POST request
-    //    func post(url: String, body: String = "") {
-    //        apiCall([
-    //            "method": "POST",
-    //            "url": url,
-    //            "body": body
-    //            ])
-    //    }
-    //
-    //    /// HTTP request method for DELETE
-    //    ///
-    //    /// :param: url         URL for DELETE request
-    //    func delete(url: String) {
-    //        apiCall([
-    //            "method": "DELETE",
-    //            "url": url,
-    //            ])
-    //    }
-    //
-    //    /// Generic HTTP request
+    //    /// Generic HTTP request method
     //    ///
     //    /// :param: options     List of options for HTTP request
-    func apiCall(options: [String: AnyObject]) -> Transaction {
+    func request(options: [String: AnyObject]) -> ApiResponse {
         var method = ""
         var url = ""
         var headers = [String: String]()
         headers["Content-Type"] = "application/json"
         headers["Accept"] = "application/json"
         var query: [String: String]?
-        //            var body: AnyObject = ""
         var body = [String: AnyObject]()
         if let m = options["method"] as? String {
             method = m
@@ -366,10 +314,7 @@ class Platform {
             query = nil
         }
         if let b = options["body"] as? [String: AnyObject] {
-            //                if let check = b as? NSDictionary {
             body = options["body"] as! [String: AnyObject]
-            //                } else {
-            //                body = options["body"] as! [String: AnyObject]
         }
         
         return sendRequest(self.client.createRequest(method, url: url, query: query, body: body, headers: headers), path: url, options: options)
@@ -380,15 +325,13 @@ class Platform {
     ///
     /// :param: options         List of options for HTTP request
     /// :param: completion      Completion handler for HTTP request
-    func apiCall(options: [String: AnyObject], completion: (transaction: Transaction) -> Void) {
-        println("Inside apiCall")
+    func request(options: [String: AnyObject], completion: (transaction: ApiResponse) -> Void) {
         var method = ""
         var url = ""
         var headers = [String: String]()
         headers["Content-Type"] = "application/json"
         headers["Accept"] = "application/json"
         var query: [String: String]?
-        //            var body: AnyObject = ""
         var body = [String: AnyObject]()
         if let m = options["method"] as? String {
             method = m
@@ -403,10 +346,7 @@ class Platform {
             query = q
         }
         if let b = options["body"] as? [String: AnyObject] {
-            //                if let check = b as? NSDictionary {
             body = options["body"] as! [String: AnyObject]
-            //                } else {
-            //                body = options["body"] as! [String: AnyObject]
         }
         
         let urlCreated = createUrl(url,options: options)
