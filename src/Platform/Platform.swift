@@ -21,11 +21,13 @@ class Platform {
     
     
     // Platform credentials
-    var auth: Auth
-    var client: Client
-    let server: String
-    let appKey: String
-    let appSecret: String
+    internal var auth: Auth
+    internal var client: Client
+    internal let server: String
+    internal let appKey: String
+    internal let appSecret: String
+    internal var appName: String
+    internal var appVersion: String
     //    var subscription: Subscription?
 
 
@@ -34,12 +36,14 @@ class Platform {
     /// :param: appKey      The appKey of your app
     /// :param: appSecet    The appSecret of your app
     /// :param: server      Choice of PRODUCTION or SANDBOX
-    init(appKey: String, appSecret: String, server: String) {
+    init(client: Client, appKey: String, appSecret: String, server: String, appName: String = "", appVersion: String = "") {
         self.appKey = appKey
+        self.appName = appName != "" ? appName : "Unnamed"
+        self.appVersion = appVersion != "" ? appVersion : "0.0.0"
         self.appSecret = appSecret
         self.server = server
         self.auth = Auth()
-        self.client = Client()
+        self.client = client
         
     }
     
@@ -220,15 +224,15 @@ class Platform {
 
     
     // Generic Method calls  ( HTTP ) GET
-    func get(url: String, query: [String: String] = ["":""], completion: (transaction: ApiResponse) -> Void) {
+    func get(url: String, query: [String: String] = ["":""], completion: (response: ApiResponse) -> Void) {
         request([
             "method": "GET",
             "url": url,
             "query": query
             ])
             {
-                (t) in
-                completion(transaction: t)
+                (r) in
+                completion(response: r)
                 
             }
     }
@@ -246,43 +250,43 @@ class Platform {
     
     
     // Generic Method calls  ( HTTP ) POST
-    func post(url: String, body: [String: AnyObject] = ["":""], completion: (transaction: ApiResponse) -> Void) {
+    func post(url: String, body: [String: AnyObject] = ["":""], completion: (respsone: ApiResponse) -> Void) {
         request([
             "method": "POST",
             "url": url,
             "body": body
             ])
             {
-                (t) in
-                completion(transaction: t)
+                (r) in
+                completion(respsone: r)
                 
             }
     }
     
     // Generic Method calls  ( HTTP ) PUT
-    func put(url: String, body: [String: AnyObject] = ["":""], completion: (transaction: ApiResponse) -> Void) {
+    func put(url: String, body: [String: AnyObject] = ["":""], completion: (respsone: ApiResponse) -> Void) {
         request([
             "method": "PUT",
             "url": url,
             "body": body
             ])
             {
-                (t) in
-                completion(transaction: t)
+                (r) in
+                completion(respsone: r)
                 
             }
     }
     
     // Generic Method calls ( HTTP ) DELETE
-    func delete(url: String, query: [String: String] = ["":""], completion: (transaction: ApiResponse) -> Void) {
+    func delete(url: String, query: [String: String] = ["":""], completion: (response: ApiResponse) -> Void) {
         request([
             "method": "DELETE",
             "url": url,
             "query": query
             ])
             {
-                (t) in
-                completion(transaction: t)
+                (r) in
+                completion(response: r)
                 
         }
     }
@@ -325,7 +329,7 @@ class Platform {
     ///
     /// :param: options         List of options for HTTP request
     /// :param: completion      Completion handler for HTTP request
-    func request(options: [String: AnyObject], completion: (transaction: ApiResponse) -> Void) {
+    func request(options: [String: AnyObject], completion: (response: ApiResponse) -> Void) {
         var method = ""
         var url = ""
         var headers = [String: String]()
@@ -352,8 +356,8 @@ class Platform {
         let urlCreated = createUrl(url,options: options)
         
         sendRequest(self.client.createRequest(method, url: urlCreated, query: query, body: body, headers: headers), path: url, options: options) {
-            (t) in
-            completion(transaction: t)
+            (r) in
+            completion(response: r)
             
         }
         

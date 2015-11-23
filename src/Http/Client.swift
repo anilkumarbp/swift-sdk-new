@@ -17,6 +17,7 @@ class Client {
     
     internal var mockRegistry: AnyObject?
     
+    // Constants
     var contentType = "Content-Type"
     var jsonContentType = "application/json"
     var multipartContentType = "multipart/mixed"
@@ -58,38 +59,30 @@ class Client {
     ///
     /// :param: options         List of options for HTTP request
     /// :param: completion      Completion handler for HTTP request
-    func send(request: NSMutableURLRequest, completion: (transaction: ApiResponse) -> Void) {
+    func send(request: NSMutableURLRequest, completion: (response: ApiResponse) -> Void) {
         if self.useMock {
             sendMock(request) {
-                (t) in
-                completion(transaction: t)
+                (r) in
+                completion(response: r)
             }
         } else {
             sendReal(request) {
-                (t) in
-                completion(transaction: t)
+                (r) in
+                completion(response: r)
             }
         }
     }
     
     
-    func sendReal(request: NSMutableURLRequest, completion: (transaction: ApiResponse) -> Void) {
-        var trans = ApiResponse(request: request)
+    func sendReal(request: NSMutableURLRequest, completion: (response: ApiResponse) -> Void) {
+//        var trans = ApiResponse(request: request)
         println("inside sendReal :")
         var task: NSURLSessionDataTask = NSURLSession.sharedSession().dataTaskWithRequest(request) {
             (data, response, error) in
-
-            //            println("The data is: ",trans.getData())
-
-            //            println("The response is :",trans.getResponse())
-            
             var errors: NSError?
-            let readdata = NSJSONSerialization.JSONObjectWithData(data!, options: nil, error: &errors) as! NSDictionary
-            trans.setData(data)
-            trans.setResponse(response)
-            trans.setError(error)
-            trans.setDict(readdata)
-            completion(transaction:trans)
+            let dict = NSJSONSerialization.JSONObjectWithData(data!, options: nil, error: &errors) as! NSDictionary
+            var apiresponse = ApiResponse(request: request, data: data, response: response, error: error, dict: dict)
+            completion(response:apiresponse)
         }
         task.resume()
     }
@@ -101,41 +94,28 @@ class Client {
     
     func sendReal(request: NSMutableURLRequest) -> ApiResponse {
         
-        var trans = ApiResponse(request: request)
         var response: NSURLResponse?
         var error: NSError?
         let data = NSURLConnection.sendSynchronousRequest(request, returningResponse: &response, error: &error)
-        //                println(data)
         println((response as! NSHTTPURLResponse).statusCode)
-        
-        if (response as! NSHTTPURLResponse).statusCode / 100 != 2 {
-            //                    (data, response, error) in
-            trans.setData(data)
-            trans.setResponse(response)
-            trans.setError(error)
-            return trans
-        }
-        //
         var errors: NSError?
-        let readdata = NSJSONSerialization.JSONObjectWithData(data!, options: nil, error: &errors) as! NSDictionary
-        
-        trans.setData(data)
-        trans.setDict(readdata)
-        trans.setResponse(response)
-        trans.setError(error)
-        //        var trans = Transaction(request: request)
-        //        var task: NSURLSessionDataTask = NSURLSession.sharedSession().dataTaskWithRequest(request) {
-        //            (data, response, error) in
-        //            trans.setData(data)
-        //            trans.setResponse(response)
-        //            trans.setError(error)
-        //        }
-        //        task.resume()
-        return trans
+        let dict = NSJSONSerialization.JSONObjectWithData(data!, options: nil, error: &errors) as! NSDictionary
+        var apiresponse = ApiResponse(request: request, data: data, response: response, error: error, dict: dict)
+//        trans.setData(data)
+//        trans.setDict(readdata)
+//        trans.setResponse(response)
+//        trans.setError(error)
+
+        return apiresponse
     }
     
     func sendMock(request: NSMutableURLRequest) -> ApiResponse {
-        var trans = ApiResponse(request: request)
+        
+        var data: NSData?
+        var response: NSURLResponse?
+        var error: NSError?
+        var dict: NSDictionary?
+        var trans = ApiResponse(request: request, data: data, response: response, error: error, dict: dict)
         return trans
     }
     
@@ -177,18 +157,10 @@ class Client {
     // Create a request
     func createRequest(method: String, url: String, query: [String: String]?=nil, body: [String: AnyObject]?, headers: [String: String]) -> NSMutableURLRequest {
         
-        //        createUrl()
-        //      var properties = parseProperties(method,url,query,body,headers)
         var truncatedBodyFinal: String = ""
         var truncatedQueryFinal: String = ""
         var queryFinal: String = ""
-        
-        // Check if the Query is empty
-        //        if (query?.isEmpty == 1) {
-        //            println("Query is empty")
-        //            queryFinal = ""
-        //        }
-        //        else {
+
         if let q = query {
             queryFinal = "?"
             
@@ -205,74 +177,22 @@ class Client {
             
             println("Non-Empty Query List")
         }
-        //        }
-        
-        
-        
-        
-        // Headers
-        //        if (headers.isEmpty) {
-        //            var headers: [String: String] = [:]
-        //            headers[contentType] = jsonContentType
-        //            headers[accept] = jsonContentType
-        //            println(headers[contentType])
-        //            println(headers[accept])
-        //        }
-        //
-        
-        
-        
+
         // Body
         var bodyString: String
         var bodyFinal: String = ""
-        //        if (headers["Content-type"] == "application/x-www-form-urlencoded;charset=UTF-8") {
-        //
-        //            //            var bodyString: String
-        //            //
-        //            if let q = body {
-        //                //                bodyString = jsonToString(json)
-        //                //            } else {
-        //                //                bodyString = body as! String
-        //                //            }
-        //
-        //                //
-        //                //            if let q: [String: AnyObject] = body {
-        //                bodyFinal = "?"
-        //                ////            if let body: AnyObject = body {
-        //                //            if let body as [String: AnyObject] {
-        //                for key in q.keys {
-        //                    bodyFinal = bodyFinal + key + "=" + (q[key]! as! String) + "&"
-        //                }
-        //                truncatedBodyFinal = bodyFinal.substringToIndex(bodyFinal.endIndex.predecessor())
-        //                //            println(truncatedBodyFinal)
-        //            }
-        //        }
-        
+
         // Check if the body is empty
         if (body?.count == 0) {
             println("Body is Empty")
             truncatedBodyFinal = ""
-        }
-            //
-            //
-        else {
+            
+        } else {
             
             // Check if body is for authentication
             if (headers["Content-type"] == "application/x-www-form-urlencoded;charset=UTF-8") {
-                
-                //            var bodyString: String
-                //
                 if let q = body {
-                    //                bodyString = jsonToString(json)
-                    //            } else {
-                    //                bodyString = body as! String
-                    //            }
-                    
-                    //
-                    //            if let q: [String: AnyObject] = body {
                     bodyFinal = "?"
-                    ////            if let body: AnyObject = body {
-                    //            if let body as [String: AnyObject] {
                     for key in q.keys {
                         bodyFinal = bodyFinal + key + "=" + (q[key]! as! String) + "&"
                     }
@@ -281,7 +201,7 @@ class Client {
                 }
             }
                 
-                // Format the body
+            // Format the body
             else {
                 if let json = body as AnyObject? {
                     println("Non-Empty Body")
@@ -308,89 +228,9 @@ class Client {
             for key in headers.keys {
                 request.setValue(headers[key], forHTTPHeaderField: key)
             }
-            //            request.setValue(urlencodedContentType, forHTTPHeaderField: contentType)
-            //            request.setValue(jsonContentType, forHTTPHeaderField: accept)
-        }
-        
-        return request
-        
-    }
-    
-    
-    // makes a request
-    func requestFactory(method: String, url: String, query: [String: String]?, body: AnyObject, headers: [String: String]) -> NSMutableURLRequest {
-        
-        var queryFinal: String = ""
-        
-        
-        
-        if let q = query {
-            queryFinal = "?"
-            for key in q.keys {
-                queryFinal = queryFinal + key + "=" + q[key]! + "&"
-            }
-        }
-        
-        var bodyString: String
-        
-        if let json = body as? [String: AnyObject] {
-            bodyString = jsonToString(json)
-        } else {
-            bodyString = body as! String
-        }
-        
-        var request = NSMutableURLRequest()
-        
-        if let nsurl = NSURL(string: url + queryFinal) {
-            request = NSMutableURLRequest(URL: nsurl)
-            request.HTTPMethod = method
-            request.HTTPBody = bodyString.dataUsingEncoding(NSUTF8StringEncoding)
-            for key in headers.keys {
-                request.setValue(headers[key], forHTTPHeaderField: key)
-            }
         }
         
         return request
     }
-    
-    func getRequestHeaders() {
-        
-    }
-    
-    func parseProperties(method: String, url: String, query: [String: String]?, body: [String:AnyObject], headers: [String: String]) {
-        
-        // URL
-        
-        //        var queryFinal: String = ""
-        //        var url = ""
-        //        if let q = query {
-        //            queryFinal = "?"
-        //            for key in q.keys {
-        //                queryFinal = queryFinal + key + "=" + q[key]! + "&"
-        //            }
-        //        }
-        //
-        //        url= url + queryFinal
-        //
-        //        // Body
-        //
-        //        var bodyString: String
-        //
-        //        if let json = body as? [String: AnyObject] {
-        //            bodyString = jsonToString(json)
-        //        } else {
-        //            bodyString = body as! String
-        //        }
-        //
-        //        // Headers
-        //
-        ////        var headers: [String: String] = [String:String]()
-        //        headers["Content-Type"]: urlencodedContentType
-        //        headers["Accept"]: jsonContentType
-        //
-        //
-        
-    }
-    
     
 }

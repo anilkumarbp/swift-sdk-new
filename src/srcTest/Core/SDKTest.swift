@@ -8,6 +8,7 @@
 
 import Cocoa
 import XCTest
+import SDK
 
 class SDKTest: XCTestCase {
 
@@ -19,11 +20,16 @@ class SDKTest: XCTestCase {
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
+         sleep(5)
     }
 
     func testExample() {
         // This is an example of a functional test case.
         XCTAssert(true, "Pass")
+    }
+    
+    func testConstructor() {
+        var sdk = SDK(appKey: "foo", appSecret: "bar", server: SDK.RC_SERVER_PRODUCTION)
     }
 
     func testPerformanceExample() {

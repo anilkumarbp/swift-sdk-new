@@ -133,25 +133,13 @@ class Subscription: NSObject, PNObjectEventListener {
     ///
     /// :param: options         List of options for PubNub
     func renew(options: [String: AnyObject], completion: (transaction: ApiResponse) -> Void) {
-//        if let events = options["eventFilters"] {
-//            self.eventFilters = events as! [String]
-//        } else if let events = options["events"] {
-//            self.eventFilters = events as! [String]
-//        } else {
-//            self.eventFilters = [
-//                "/restapi/v1.0/account/~/extension/~/presence",
-//                "/restapi/v1.0/account/~/extension/~/message-store"
-//            ]
-//        }
-//        
-        
+     
         // include PUT instead of the apiCall
         platform.put("/subscription/" + subscription!.id,
             body: [
                         "eventFilters": getFullEventFilters()
                     ]) {
                 (transaction) in
-//                let dictionary = NSJSONSerialization.JSONObjectWithData(data!, options: nil, error: nil) as! NSDictionary
                 let dictionary = transaction.getDict()
                  println("The subscription RENEW dictionary is :", dictionary)        
                 if let error = dictionary["errorCode"] {
@@ -264,19 +252,6 @@ class Subscription: NSObject, PNObjectEventListener {
                     	self.pubnub = nil
                     }
         }
-        
-//            platform.apiCall([
-//                "method": "DELETE",
-//                "url": "/restapi/v1.0/subscription/" + sub.id,
-//                "body": [
-//                    "eventFilters": getFullEventFilters(),
-//                    "deliveryMode": [
-//                        "transportType": "PubNub",
-//                        "encryption": "false"
-//                    ]
-//                ]
-//                ])
-        
     
     }
     

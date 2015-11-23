@@ -24,8 +24,12 @@ class ApiResponse {
     private var error: NSError?
     private var dict: NSDictionary?
     
-    init(request: NSMutableURLRequest, status: Int = 200) { // data via constructor
+    init(request: NSMutableURLRequest, status: Int = 200, data: NSData?, response: NSURLResponse?, error: NSError?, dict: NSDictionary?) { // data via constructor
         self.request = request
+        self.data = data
+        self.response = response
+        self.error = error
+        self.dict = dict
     }
     
     func getText() -> String {
@@ -47,24 +51,7 @@ class ApiResponse {
     func getJsonAsString() -> String {
         return jsonAsString
     }
-    
-    func setData(data: NSData?) { // remove
-        self.data = data
-        self.jsonAsString = JSONStringify(data!)
-    }
-    
-    func setDict(dict: NSDictionary?) { // remove
-        self.dict = dict
-    }
-    
-    func setResponse(response: NSURLResponse?) {
-        self.response = response
-    }
-    
-    func setError(error: NSError?) {
-        self.error = error
-    }
-    
+
     func getMultipart() -> AnyObject? {
         return self.multipartTransactions
     }
