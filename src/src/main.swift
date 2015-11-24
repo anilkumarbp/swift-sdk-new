@@ -30,16 +30,23 @@ println(response.getDict())
 
 // Test a GET request
 
-//
-//platform.get("/account/~/extension/~/call-log")
-//    {
-//        (transaction) in
-//        println("Response is :")
-//        println(transaction.getResponse())
-//        println("API response is :")
-//        println(transaction.getDict())
-//    }
+platform.refresh()
+
+platform.get("/account/~/extension/~/call-log")
+    {
+        (transaction) in
+        println("Response is :")
+        println(transaction.getResponse())
+        println("API response is :")
+        println(transaction.getDict())
+    }
 //sleep(2)
+
+// external refresh
+
+//platform.refresh()
+
+
 //
 //print("completed call-logs")
 //
@@ -58,7 +65,7 @@ println(response.getDict())
 //        println("API response is :")
 //        println(transaction.getDict())
 //    }
-//sleep(2)
+////sleep(2)
 //
 //platform.post("/account/~/extension/~/ringout", body :
 //                [ "to": ["phoneNumber": "18315941779"],
@@ -75,7 +82,7 @@ println(response.getDict())
 //        
 //    }
 //
-//sleep(5)
+////sleep(5)
 //
 //print("completed ring-out")
 //
@@ -91,25 +98,25 @@ println(response.getDict())
 //        println(transaction.getDict())
 //        
 //    }
-//sleep(5)
+////sleep(5)
 //
 //print("ring-out cancelled")
 //
-multipartBuilder.setBody([
-    "to":["phoneNumber":"15856234120"],
-    "faxResolution":"High"
-    ])
-multipartBuilder.add("sample testing", fileName: "sample.txt")
-
-multipartBuilder.request("/account/~/extension/~/fax")
-{
-    (transaction) in
-    println("Response is :")
-    println(transaction.getResponse())
-    println("API response is :")
-    println(transaction.getDict())
-    
-}
-
-sleep(2)
-
+//multipartBuilder.setBody([
+//    "to":["phoneNumber":"15856234120"],
+//    "faxResolution":"High"
+//    ])
+//multipartBuilder.add("sample testing", fileName: "sample.txt")
+//
+//multipartBuilder.request("/account/~/extension/~/fax")
+//{
+//    (transaction) in
+//    println("Response is :")
+//    println(transaction.getResponse())
+//    println("API response is :")
+//    println(transaction.getDict())
+//    
+//}
+//
+////sleep(2)
+//

@@ -1,15 +1,17 @@
 //
-//  PlatformTest.swift
+//  SDKTest.swift
 //  src
 //
-//  Created by Anil Kumar BP on 11/22/15.
+//  Created by Anil Kumar BP on 11/23/15.
 //  Copyright (c) 2015 Anil Kumar BP. All rights reserved.
 //
 
 import Cocoa
 import XCTest
 
-class PlatformTest: XCTestCase {
+
+
+class SDKTest: XCTestCase {
 
     override func setUp() {
         super.setUp()
@@ -23,7 +25,12 @@ class PlatformTest: XCTestCase {
 
     func testExample() {
         // This is an example of a functional test case.
+        
         XCTAssert(true, "Pass")
+    }
+    func testConstructor() {
+//        var sdk = SDK(appKey: "", appSecret: "", server: SDK.RC_SERVER_SANDBOX)
+ 
     }
 
     func testPerformanceExample() {

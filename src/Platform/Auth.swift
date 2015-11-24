@@ -179,6 +179,7 @@ class Auth {
     ///
     /// :returns: String of 'refresh token'
     func refreshToken() -> String {
+        println("The refresh token is :"+self.refresh_token!)
         return self.refresh_token!
     }
     

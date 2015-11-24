@@ -74,17 +74,21 @@ class Client {
     }
     
     
-    func sendReal(request: NSMutableURLRequest, completion: (response: ApiResponse) -> Void) {
+    func sendReal(request: NSMutableURLRequest, completionHandler: (response: ApiResponse) -> Void) {
 //        var trans = ApiResponse(request: request)
         println("inside sendReal :")
+        var semaphore = dispatch_semaphore_create(0)
         var task: NSURLSessionDataTask = NSURLSession.sharedSession().dataTaskWithRequest(request) {
+            
             (data, response, error) in
             var errors: NSError?
             let dict = NSJSONSerialization.JSONObjectWithData(data!, options: nil, error: &errors) as! NSDictionary
             var apiresponse = ApiResponse(request: request, data: data, response: response, error: error, dict: dict)
-            completion(response:apiresponse)
+            completionHandler(response:apiresponse)
+            dispatch_semaphore_signal(semaphore)
         }
         task.resume()
+        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
     }
     
     

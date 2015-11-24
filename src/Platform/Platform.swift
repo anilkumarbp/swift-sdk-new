@@ -85,7 +85,7 @@ class Platform {
             "access_token_ttl": self.ACCESS_TOKEN_TTL,
             "refresh_token_ttl": self.REFRESH_TOKEN_TTL
             ])
-        println("Successfull return from requestToken")
+        println("Login : Successfull return from requestToken")
         self.auth.setData(response.getDict())
         println("Is access token valid : ",self.auth.accessTokenValid())
         println("The auth data is : ")
@@ -100,20 +100,23 @@ class Platform {
     /// not be appended to following accessToken.
     func refresh() -> ApiResponse {
         //        let transaction:
+        println("Inside Rfresh")
         if(!self.auth.refreshTokenValid()){
             NSException(name: "Refresh token has expired", reason: "reason", userInfo: nil).raise()
         }
         let response = requestToken(self.TOKEN_ENDPOINT,body: [
-            "grant_type": "refresh_token",
+
             "refresh_token": self.auth.refreshToken(),
-            "access_token_ttl": self.ACCESS_TOKEN_TTL,
-            "refresh_token_ttl": self.REFRESH_TOKEN_TTL
+            "grant_type": "refresh_token"
+//            "access_token_ttl": self.ACCESS_TOKEN_TTL,
+//            "refresh_token_ttl": self.REFRESH_TOKEN_TTL
             ])
-        println("Successfull return from requestToken")
+        println("Refresh : Successfull return from requestToken")
         println(response.getDict())
         self.auth.setData(response.getDict())
         println("Is access token valid",self.auth.accessTokenValid())
-        println("The auth data is",self.auth.data())
+        println("The auth data is :")
+        println(response.JSONStringify(response.getDict(), prettyPrinted: true))
         return response
     }
     
@@ -179,6 +182,7 @@ class Platform {
     func apiKey() -> String {
         let plainData = (self.appKey + ":" + self.appSecret as NSString).dataUsingEncoding(NSUTF8StringEncoding)
         let base64String = plainData!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
+        println("apiKey:",base64String)
         return base64String
     }
     
