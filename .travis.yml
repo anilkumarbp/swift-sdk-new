@@ -7,5 +7,3 @@ branches:
  only:
  - master
 
-script:
- - xcodebuild clean build test -workspace src.xcworkspace -scheme src
