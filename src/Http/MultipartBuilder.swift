@@ -10,8 +10,8 @@ import Foundation
 
 class MultipartBuilder {
     
-    internal var body = [String: AnyObject]()
-    internal var contents = [String: AnyObject]()
+    internal var body = String()
+    internal var _contents = [String: AnyObject]()
     internal var _boundary: String?
     
     // Set the Boundary
@@ -26,12 +26,12 @@ class MultipartBuilder {
     
     // Set Body for the MultiPart
     func setBody(body: [String: AnyObject]) -> MultipartBuilder {
-        self.body = body
+        self.body = jsonToString(body)
         return self
     }
     
-    // Retreive body 
-    func getBody() -> [String: AnyObject] {
+    // Retreive body
+    func getBody() -> String {
         return self.body
     }
     
@@ -54,22 +54,132 @@ class MultipartBuilder {
             let fieldName = "uploadFile"
             element["contents"] = String(contentsOfFile: content.path!!, encoding: NSUTF8StringEncoding, error: &error)!
         }
-        
-        // Set the filename if not empty
-        if(fileName != "") {
-            element["filename"] = fileName
-        }
-        
-        // Set the headers if not empty
-        if(!headers!.isEmpty) {
-            element["headers"] = headers
-        }
-        
-        self.contents = element
+//        
+//        // Set the filename if not empty
+//        if(fileName != "") {
+//            element["filename"] = fileName
+//        }
+//        
+//        // Set the headers if not empty
+//        if(!headers!.isEmpty) {
+//            element["headers"] = headers
+//        }
+//        
+        self._contents = element
         
         return self
     }
     
+    // Get the contents
+    func contents() -> [String:AnyObject] {
+        return self._contents
+    }
+    
+    // Create a request
+    func request(url: String, method: String = "POST", completion: (respsone: ApiResponse) -> Void) {
+//        var stream = self.requestBody()
+        let uniqueId = NSProcessInfo.processInfo().globallyUniqueString
+        let boundaryConstant = "Boundary-"+uniqueId
+//        var dataString: String = String()
+        
+        var headers: [String: String] = [:]
+        headers["Content-type"] = "application/octet-stream; boundary=" + boundaryConstant
+
+        let fileName = self._contents["filename"]
+        let contents = self._contents["contents"]
+        let mimeType = "application/octet-stream"
+        let fieldName = "uploadFile"
+
+        var error: NSError?
+        var dataString = "--\(boundaryConstant)\r\n"
+        dataString += "Content-Type: application/json\r\n"
+        dataString += "Content-Disposition: form-data; name=\"json\"; filename=\"request.json\"\r\n"
+        dataString += "Content-Length: 51\r\n"
+        dataString += "\r\n"
+        dataString += "{\"to\":{\"phoneNumber\":\"foo\"},\"faxResolution\":\"High\"}\r\n"
+        dataString += "--\(boundaryConstant)--\r\n"
+        dataString += "Content-Type: \(mimeType)\r\n\r\n"
+        dataString += "Content-Disposition: form-data; name=\"\(fieldName)\"; filename=\"\(fileName)\"\r\n"
+        dataString += String(stringInterpolationSegment: contents)
+        dataString += "\r\n"
+        dataString += "--\(boundaryConstant)--\r\n"
+        
+        
+        //        let contentType = "multipart/form-data; boundary=" + boundaryConstant
+        
+
+        platform.request([
+            "method": "POST",
+            "url": url,
+            "body": [dataString] as AnyObject,
+            "headers": headers
+            ])
+            {
+                (r) in
+                completion(respsone: r)
+                
+        }
+    }
+    
+    
+    func jsonToString(json: [String: AnyObject]) -> String {
+        var result = "{"
+        var delimiter = ""
+        for key in json.keys {
+            result += delimiter + "\"" + key + "\":"
+            var item = json[key]
+            if let check = item as? String {
+                result += "\"" + check + "\""
+            } else {
+                if let check = item as? [String: AnyObject] {
+                    result += jsonToString(check)
+                } else if let check = item as? [AnyObject] {
+                    result += "["
+                    delimiter = ""
+                    for item in check {
+                        result += "\n"
+                        result += delimiter + "\""
+                        result += item.description + "\""
+                        delimiter = ","
+                    }
+                    result += "]"
+                } else {
+                    result += item!.description
+                }
+            }
+            delimiter = ","
+        }
+        result = result + "}"
+        
+        println("Body String is :"+result)
+        return result
+    }
+
+    // Create the requestBody
+//    func requestBody() -> [String: AnyObject] {
+//        let uniqueId = NSProcessInfo.processInfo().globallyUniqueString
+//        let boundaryConstant = "Boundary-"+uniqueId
+//        var headers: [String: String] = [:]
+//        headers["Content-type"] = "multipart/form-data; boundary=" + boundaryConstant
+//        
+//        let fileName = self._contents["filename"]
+//        let contents = self._contents["contents"]
+//        let mimeType = "text/csv"
+//        let fieldName = "uploadFile"
+//
+//        
+//        var error: NSError?
+//        var dataString = "--\(boundaryConstant)\r\n"
+//        dataString += "Content-Disposition: form-data; name=\"\(fieldName)\"; filename=\"\(fileName)\"\r\n"
+//        dataString += "Content-Type: \(mimeType)\r\n\r\n"
+//        dataString += contents
+//        dataString += "\r\n"
+//        dataString += "--\(boundaryConstant)--\r\n"
+//        
+//        
+//        let contentType = "multipart/form-data; boundary=" + boundaryConstant
+        
+//    }
     
     
 }

@@ -120,7 +120,7 @@ class Client {
     }
     
     
-    private func jsonToString(json: [String: AnyObject]) -> String {
+    func jsonToString(json: [String: AnyObject]) -> String {
         var result = "{"
         var delimiter = ""
         for key in json.keys {
@@ -209,6 +209,7 @@ class Client {
                     truncatedBodyFinal = bodyFinal
                     println(truncatedBodyFinal)
                 }
+//                else if (json = body as String)
             }
         }
         

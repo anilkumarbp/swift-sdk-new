@@ -352,6 +352,9 @@ class Platform {
         if let b = options["body"] as? [String: AnyObject] {
             body = options["body"] as! [String: AnyObject]
         }
+//        else if let b = options["body"] as? NSString {
+//            body = options["body"] as! NSString
+//        }
         
         let urlCreated = createUrl(url,options: options)
         
