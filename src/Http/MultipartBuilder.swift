@@ -107,18 +107,6 @@ class MultipartBuilder {
         
         //        let contentType = "multipart/form-data; boundary=" + boundaryConstant
         
-//
-//        platform.request([
-//            "method": "POST",
-//            "url": url,
-//            "body": [dataString] as AnyObject,
-//            "headers": headers
-//            ])
-//            {
-//                (r) in
-//                completion(respsone: r)
-//                
-//        }
         
     }
     
