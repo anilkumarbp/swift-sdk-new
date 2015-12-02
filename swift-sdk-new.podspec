@@ -20,7 +20,7 @@ s.platform     = :osx, "10.10"
 
 s.license      = "MIT"
 
-s.author             = { "Anil Kumar" => "anil.akbp@gmail.com" }
+s.authors      = { "Anil Kumar" => "anil.akbp@gmail.com" }
 
 s.source       = { :git => "https://github.com/anilkumarbp/swift-sdk-new.git", :commit => "5cb2f282103620b6cf47a0009998248f54f62204" }
 
