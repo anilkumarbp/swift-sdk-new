@@ -1,7 +1,7 @@
 # RingCentral Swift SDK
 
-[![Build Status](https://travis-ci.org/anilkumarbp/swift-sdk-new.svg?branch=master)](https://travis-ci.org/anilkumarbp/swift-sdk-new)
-[![codecov.io](https://codecov.io/github/anilkumarbp/swift-sdk-new/coverage.svg?branch=master)](anilkumarbp/swift-sdk-new.svg?branch=master)
+[![Build Status](https://travis-ci.org/anilkumarbp/RingCentralSwift.svg?branch=master)](https://travis-ci.org/anilkumarbp/RingCentralSwift)
+[![codecov.io](https://codecov.io/github/anilkumarbp/RingCentralSwift/coverage.svg?branch=master)](anilkumarbp/RingCentralSwift.svg?branch=master)
 
 ***
 
