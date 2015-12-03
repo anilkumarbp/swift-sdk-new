@@ -24,7 +24,7 @@ s.authors      = { "Anil Kumar" => "anil.akbp@gmail.com" }
 
 s.source       = { :git => "https://github.com/anilkumarbp/swift-sdk-new.git", :commit => "5cb2f282103620b6cf47a0009998248f54f62204" }
 
-s.source_files  = "src/Core","src/Http","src/Platform","src/Subscription","src/Subscription/crypt"
+s.source_files  = "src/Core","src/Http","src/Platform","src/Subscription"
 
 s.exclude_files = "Classes/Exclude"
 
