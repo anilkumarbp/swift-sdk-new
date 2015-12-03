@@ -12,10 +12,10 @@ import Foundation
 println("Hello, World!")
 
 
-var app_key: String = ""
-var app_secret = ""
-var username = ""
-var password = ""
+var app_key: String = "MNJx4H4cTR-02_zPnsTJ5Q"
+var app_secret = "7CJKigzBTzOvzTDPP1-C3AARDYohOlSaCLcvgzpNZUzw"
+var username = "15856234190"
+var password = "sandman1!"
 var response: ApiResponse
 
 
@@ -44,48 +44,48 @@ platform.get("/account/~/extension/~/call-log")
 
 // external refresh
 
-//platform.refresh()
+platform.refresh()
 
 
-//
-//print("completed call-logs")
-//
-//// add events to the subscription object
-//subscription.addEvents(
-//    [
-//        "/restapi/v1.0/account/~/extension/~/presence",
-//        "/restapi/v1.0/account/~/extension/~/message-store"
-//    ])
-//
-//subscription.register()
-//    {
-//        (transaction) in
-//        println("Response is :")
-//        println(transaction.getResponse())
-//        println("API response is :")
-//        println(transaction.getDict())
-//    }
-////sleep(2)
-//
-//platform.post("/account/~/extension/~/ringout", body :
-//                [ "to": ["phoneNumber": "18315941779"],
-//                  "from": ["phoneNumber": "15856234190"],
-//                  "callerId": ["phoneNumber": ""],
-//                  "playPrompt": "true"
-//                ])
-//    {
-//        (transaction) in
-//        println("Response is :")
-//        println(transaction.getResponse())
-//        println("API response is :")
-//        println(transaction.getDict())
-//        
-//    }
-//
-////sleep(5)
-//
-//print("completed ring-out")
-//
+
+print("completed call-logs")
+
+// add events to the subscription object
+subscription.addEvents(
+    [
+        "/restapi/v1.0/account/~/extension/~/presence",
+        "/restapi/v1.0/account/~/extension/~/message-store"
+    ])
+
+subscription.register()
+    {
+        (transaction) in
+        println("Response is :")
+        println(transaction.getResponse())
+        println("API response is :")
+        println(transaction.getDict())
+    }
+//sleep(2)
+
+platform.post("/account/~/extension/~/ringout", body :
+                [ "to": ["phoneNumber": "18315941779"],
+                  "from": ["phoneNumber": "15856234190"],
+                  "callerId": ["phoneNumber": ""],
+                  "playPrompt": "true"
+                ])
+    {
+        (transaction) in
+        println("Response is :")
+        println(transaction.getResponse())
+        println("API response is :")
+        println(transaction.getDict())
+        
+    }
+
+//sleep(5)
+
+print("completed ring-out")
+
 //platform.delete("/account/~/extension/~/ringout", query :
 //    [
 //        "ringoutId": "264"
@@ -98,8 +98,8 @@ platform.get("/account/~/extension/~/call-log")
 //        println(transaction.getDict())
 //        
 //    }
-////sleep(5)
-//
+//sleep(5)
+
 //print("ring-out cancelled")
 //
 //multipartBuilder.setBody([
@@ -117,6 +117,6 @@ platform.get("/account/~/extension/~/call-log")
 //    println(transaction.getDict())
 //    
 //}
-//
-////sleep(2)
+
+//sleep(2)
 //
